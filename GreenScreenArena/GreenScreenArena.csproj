@@ -504,6 +504,10 @@
 		<Compile Include="debugHelpers.cs" />
 		<Compile Include="MelonTemplate.cs" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Assets\" />
+	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="COPY &quot;$(TargetPath)&quot; &quot;G:\SteamLibrary\steamapps\common\RUMBLE\Mods&quot;" />
