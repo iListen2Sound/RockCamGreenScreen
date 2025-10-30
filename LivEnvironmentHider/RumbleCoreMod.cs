@@ -3,23 +3,29 @@ using RumbleModdingAPI;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 
-[assembly: MelonInfo(typeof(GreenScreenArena.GreenScreenArena), GreenScreenArena.BuildInfo.Name, GreenScreenArena.BuildInfo.Version, GreenScreenArena.BuildInfo.Author)]
+[assembly: MelonInfo(typeof(LivEnvironmentHider.LivEnvironmentHider), LivEnvironmentHider.BuildInfo.Name, LivEnvironmentHider.BuildInfo.Version, LivEnvironmentHider.BuildInfo.Author)]
 [assembly: MelonGame("Buckethead Entertainment", "RUMBLE")]
 [assembly: MelonAuthorColor(255, 87, 166, 80)]
 [assembly: MelonColor(255, 87, 166, 80)]
 
 
-namespace GreenScreenArena
+namespace LivEnvironmentHider
 {
 	public static class BuildInfo
 	{
-		public const string Name = "GreenScreenArena";
+		public const string Name = "LivEnvironmentHider";
 		public const string Author = "iListen2Sound";
 		public const string Version = "1.0.0";
 	}
 
-	public partial class GreenScreenArena : MelonMod
+	public partial class LivEnvironmentHider : MelonMod
 	{
+		private const string USER_DATA = $"UserData/{BuildInfo.Name}/";
+		private const string CONFIG_FILE = "config.cfg";
+
+		private MelonPreferences_Category modCategory;
+		private MelonPreferences_Entry<string> GreenScreenColor;
+
 		private string CurrentScene = "";
 		private bool isFirstLoad = true;
 		private string lastDiffLogMessage = string.Empty;
@@ -35,6 +41,7 @@ namespace GreenScreenArena
 		public override void OnInitializeMelon()
 		{
 			Calls.onAMapInitialized += OnMapInitialized;
+			
 			LoggerInstance.Msg("Initialized.");
 		}
 
@@ -53,7 +60,7 @@ namespace GreenScreenArena
 			//localpos = 0 0.39 0
 			//rot = 0 0 0
 			//scale = 50 50 50
-			ScreenPack = GameObject.Instantiate(Calls.LoadAssetFromStream<GameObject>(this, "GreenScreenArena.Assets.livgreenscreen", "LivEnvironmentHider"));
+			ScreenPack = GameObject.Instantiate(Calls.LoadAssetFromStream<GameObject>(this, "LivEnvironmentHider.Assets.livgreenscreen", "LivEnvironmentHider"));
 			GameObject.DontDestroyOnLoad(ScreenPack);
 			PitMask = ScreenPack.transform.GetChild(0).gameObject;
 			Cylinder = ScreenPack.transform.GetChild(2).gameObject;
@@ -73,7 +80,7 @@ namespace GreenScreenArena
 
 			Cylinder.transform.localPosition = new Vector3(0, 0.39f, 0);
 			Cylinder.transform.localRotation = Quaternion.Euler(0, 0, 0);
-			Cylinder.transform.localScale = new Vector3(50, 50, 50);
+			Cylinder.transform.localScale = new Vector3(70, 70, 70);
 
 
 			isFirstLoad = false;
