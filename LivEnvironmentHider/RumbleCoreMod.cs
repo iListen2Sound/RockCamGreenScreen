@@ -122,7 +122,6 @@ namespace LivEnvironmentHider
 
 			derCylinder.transform.SetParent(CurrentMapProduction.transform, true);
 			derPitMask.transform.SetParent(CurrentMapProduction.transform, true);
-
 		}
 
 		/// <summary>
@@ -174,9 +173,5 @@ namespace LivEnvironmentHider
 				DiffLog($"{CurrentMapProduction.activeSelf}");
 			}
 		}
-
-
-
-
 	}
 }
