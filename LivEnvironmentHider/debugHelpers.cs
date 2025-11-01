@@ -7,7 +7,6 @@ namespace LivEnvironmentHider
 {
 	public partial class LivEnvironmentHider
 	{
-		private bool debugMode = true;
 
 		private GameObject DebugUi;
 		private TextMeshPro DebugUiText;
@@ -58,7 +57,7 @@ namespace LivEnvironmentHider
 		/// <param name="logLevel"></param>
 		private void Log(string message, bool debugOnly = false, int logLevel = 0)
 		{
-			if (!debugMode && debugOnly)
+			if (!IsDebugMode.Value && debugOnly)
 				return;
 			switch (logLevel)
 			{
