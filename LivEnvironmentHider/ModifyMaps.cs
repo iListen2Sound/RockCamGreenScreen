@@ -9,8 +9,9 @@ namespace LivEnvironmentHider
 {
 	public partial class LivEnvironmentHider : MelonMod
 	{
-        
-        private void CreateGreenScreens()
+		GameObject DerivedCylinder;
+		GameObject DerivedPitMask;
+		private void CreateGreenScreens()
 		{
 			if(CurrentScene.Contains("map"))
 			{
@@ -22,19 +23,20 @@ namespace LivEnvironmentHider
 					gsColor = Color.black;
 				}
 
-				GameObject derCylinder;
-				derCylinder = GameObject.Instantiate(BaseCylinder);
-				derCylinder.SetActive(CurrentScene.Contains("map"));
-				derCylinder.GetComponent<MeshRenderer>().material.color = gsColor;
-				derCylinder.transform.SetParent(CurrentMapProduction.transform, true);
-
 				
-				if(CurrentScene == "map1")
+				DerivedCylinder = GameObject.Instantiate(BaseCylinder);
+				DerivedCylinder.SetActive(true);
+				DerivedCylinder.GetComponent<MeshRenderer>().material.color = gsColor;
+				
+
+
+				if (CurrentScene == "map1")
 				{
-					GameObject derPitMask;
-					derPitMask = GameObject.Instantiate(BasePitMask);
-					derPitMask.GetComponent<MeshRenderer>().material.color = gsColor;
-					derPitMask.transform.SetParent(CurrentMapProduction.transform, true);
+					
+					DerivedPitMask = GameObject.Instantiate(BasePitMask);
+					DerivedPitMask.GetComponent<MeshRenderer>().material.color = gsColor;
+					DerivedPitMask.SetActive(true);
+
 				}
 			}
 		}
@@ -45,17 +47,17 @@ namespace LivEnvironmentHider
 		/// <returns></returns>
 		private IEnumerator HideFromLiv()
 		{
-			GameObject mapProduction = new();
-			List<int> objectsToHide = new();
+			GameObject mapProduction;
+			List<int> objectsToHide;
 			GameObject arenaParent;
 			GameObject tournamentScorer = GameObject.Find("NewTextGameObject(Clone)");
-			int combatFloorIndex
+			int combatFloorIndex;
 			tournamentScorer.layer = NO_LIV_LAYER;
 
 			//TODO: Include combat floor in hiding when enabled in prefs
 			if (CurrentScene == "map0")
 			{
-				objectsToHide = new List<int> { 0, 1, 3, 4, 6, /*combat floor index*/};
+				objectsToHide = new List<int> { 0, 1, 3, 4, 6, /*combat floor:*/ 2 };
 				arenaParent = Calls.GameObjects.Map0.Map0production.Mainstaticgroup.GetGameObject();
 				mapProduction = Calls.GameObjects.Map0.Map0production.GetGameObject();
 				
@@ -63,16 +65,19 @@ namespace LivEnvironmentHider
 			}
 			else if (CurrentScene == "map1")
 			{
-				objectsToHide = new List<int> { 0, 2, 3, 4, /*combat floor index*/ };
+				objectsToHide = new List<int> { 0, 2, 3, 4, /*combat floor:*/ 1 };
 				arenaParent = Calls.GameObjects.Map1.Map1production.Mainstaticgroup.GetGameObject();
 				mapProduction = Calls.GameObjects.Map1.Map1production.GetGameObject();
+				DerivedPitMask.transform.SetParent(mapProduction.transform, true);
 			} 
 			else
 			{
-				arenaParent = new();
+				yield break;
 			}
 
-			if(!HideFloor.Value)
+			DerivedCylinder.transform.SetParent(mapProduction.transform, true);
+
+			if (!HideFloor.Value)
 			{
 				objectsToHide.RemoveAt(objectsToHide.Count - 1);
 			}
