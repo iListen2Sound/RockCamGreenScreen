@@ -78,7 +78,10 @@ namespace LivEnvironmentHider
 			}
 			this.CurrentMapProduction = mapProduction;
 
-			yield return new WaitForSeconds(DelayEnvHide.Value);
+            float secondsToWait;
+            secondsToWait = CurrentScene == LastScene ? 0 : ((float) DelayEnvHide.Value);
+
+			yield return new WaitForSeconds(secondsToWait);
 
 			for (int i = 0; i < arenaParent.transform.childCount; i++)
 			{

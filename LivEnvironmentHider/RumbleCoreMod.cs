@@ -23,7 +23,7 @@ namespace LivEnvironmentHider
 	public partial class LivEnvironmentHider : MelonMod
 	{
 
-
+		private string LastScene = "";
 		private string CurrentScene = "";
 		private bool isFirstLoad = true;
 		private string lastDiffLogMessage = string.Empty;
@@ -52,6 +52,7 @@ namespace LivEnvironmentHider
 		}
 		private void OnMapInitialized(string sceneName)
 		{
+			LastScene = CurrentScene;
 			CurrentScene = sceneName.Trim().ToLower();
 			//BuildDebugScreen();
 			

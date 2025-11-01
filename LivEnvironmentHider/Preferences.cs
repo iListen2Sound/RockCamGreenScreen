@@ -20,7 +20,7 @@ namespace LivEnvironmentHider
         private MelonPreferences_Entry<string> FloorBackgroundColor;
 
         private MelonPreferences_Category Compat;
-        private MelonPreferences_Entry<int> DelayEnvHide;
+        private MelonPreferences_Entry<double> DelayEnvHide;
 
         private MelonPrefernces_Category Diagnostics;
         private MelonPreferences_Entry<bool> IsDebugMode;
