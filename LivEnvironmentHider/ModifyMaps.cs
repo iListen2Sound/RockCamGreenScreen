@@ -14,6 +14,9 @@ namespace LivEnvironmentHider
 
 		List<int> OriginalLayer = new();
 
+		//Negate this variable in HideFromLiv to toggle hide status. Set to false when in gym or park
+		bool isEnvHidden = false;
+
 		private void CreateGreenScreens()
 		{
 			if(CurrentScene.Contains("map"))
@@ -50,13 +53,19 @@ namespace LivEnvironmentHider
 		/// <returns></returns>
 		private IEnumerator HideFromLiv(bool hide, bool skipDelay = false)
 		{
+			if(isEnvHidden == hide)
+			{
+				Log($"HideFromLiv: Environment is already {(hide ? "hidden" : "visible")}. Breaking out of coroutine", false, 1);
+				yield break;
+
+			}
 			GameObject mapProduction;
 			List<int> objectsToHide;
 			GameObject arenaParent;
 			GameObject tournamentScorer = GameObject.Find("NewTextGameObject(Clone)");
 			int combatFloorIndex;
 			tournamentScorer.layer = NO_LIV_LAYER;
-
+			
 
 			//Select game objects to hide according to the arena
 			if (CurrentScene == "map0")
@@ -79,9 +88,13 @@ namespace LivEnvironmentHider
 			} 
 			else
 			{
+				isEnvHidden = false;
 				//Exit if not in a combat map
 				yield break;
 			}
+
+			
+			
 			DerivedCylinder.transform.SetParent(mapProduction.transform, true);
 			DerivedCylinder.SetActive(!hide);
 
@@ -118,6 +131,15 @@ namespace LivEnvironmentHider
 				}
 				Log($"Hide from LIV post: {child.Name} layer: {child.layer}", true)
 			}
+			isEnvHidden = hide;
+			DefaultHideState.Value = hide;
+		}
+
+
+		private void ToggleEnvHide()
+		{
+			
+			MelonCoroutines.Start(HideFromLiv(!isEnvHidden, true));
 		}
     }
 }

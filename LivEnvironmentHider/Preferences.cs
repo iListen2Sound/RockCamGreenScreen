@@ -18,6 +18,7 @@ namespace LivEnvironmentHider
 		private MelonPreferences_Entry<string> GreenScreenColor;
 		private MelonPreferences_Entry<bool> HideFloor;
 		private MelonPreferences_Entry<string> FloorBackgroundColor;
+		private MelonPreferences_Entry<bool> DefaultHideState;
 
 		private MelonPreferences_Category Compat;
 		private MelonPreferences_Entry<double> DelayEnvHide;
@@ -37,7 +38,8 @@ namespace LivEnvironmentHider
 
 			modCategory = MelonPreferences.CreateCategory(BuildInfo.Name);
 			modCategory.SetFilePath(Path.Combine(USER_DATA, CONFIG_FILE));
-
+			
+			DefaultHideState = modCategory.CreateEntry("Green Screen Active", true, null, "Activates or deactivates green screen function");
 			GreenScreenColor = modCategory.CreateEntry("Green Screen Color", "#000000", null, "Plot Twist: Doesn't actually have to be green. If using black (default) add a luma key filter to the LIV source in OBS.");
 			HideFloor = modCategory.CreateEntry("Hide Combat Floor", false, null, "Hides the combat floor from Liv.");
 

@@ -63,7 +63,7 @@ namespace LivEnvironmentHider
 
 			//ModifyMaps
 			CreateGreenScreens();
-			MelonCoroutines.Start(HideFromLiv(true));
+			MelonCoroutines.Start(HideFromLiv(DefaultHideState.Value));
 			
 		}
 
