@@ -31,7 +31,7 @@ namespace LivEnvironmentHider
 
 				
 				DerivedCylinder = GameObject.Instantiate(BaseCylinder);
-				DerivedCylinder.SetActive(true);
+				DerivedCylinder.SetActive(GreenScreenActive.Value);
 				DerivedCylinder.GetComponent<MeshRenderer>().material.color = gsColor;
 				
 
@@ -41,7 +41,7 @@ namespace LivEnvironmentHider
 					
 					DerivedPitMask = GameObject.Instantiate(BasePitMask);
 					DerivedPitMask.GetComponent<MeshRenderer>().material.color = gsColor;
-					DerivedPitMask.SetActive(true);
+					DerivedPitMask.SetActive(GreenScreenActive.Value);
 
 				}
 			}
@@ -53,7 +53,9 @@ namespace LivEnvironmentHider
 		/// <returns></returns>
 		private IEnumerator HideFromLiv(bool hide, bool skipDelay = false)
 		{
-			if(isEnvHidden == hide)
+
+			Log($"HideFromLiv: CurrentScene is {CurrentScene}", true, 0);
+			if (isEnvHidden == hide)
 			{
 				Log($"HideFromLiv: Environment is already {(hide ? "hidden" : "visible")}. Breaking out of coroutine", false, 1);
 				yield break;
@@ -64,10 +66,12 @@ namespace LivEnvironmentHider
 			GameObject arenaParent;
 			GameObject tournamentScorer = GameObject.Find("NewTextGameObject(Clone)");
 			int combatFloorIndex;
-			tournamentScorer.layer = NO_LIV_LAYER;
+			if(tournamentScorer != null)
+				tournamentScorer.layer = NO_LIV_LAYER;
 			
 
 			//Select game objects to hide according to the arena
+			
 			if (CurrentScene == "map0")
 			{
 				//Add combat floor as last element so it can be removed from the list if hide combat floor is disabled.
@@ -84,7 +88,7 @@ namespace LivEnvironmentHider
 				mapProduction = Calls.GameObjects.Map1.Map1production.GetGameObject();
 				//Parent derived pit mask and cylinder so they get disabled along with the map production when a custom map is loaded
 				DerivedPitMask.transform.SetParent(mapProduction.transform, true);
-				DerivedPitMask.SetActive(!hide);
+				DerivedPitMask.SetActive(hide);
 			} 
 			else
 			{
@@ -96,7 +100,7 @@ namespace LivEnvironmentHider
 			
 			
 			DerivedCylinder.transform.SetParent(mapProduction.transform, true);
-			DerivedCylinder.SetActive(!hide);
+			DerivedCylinder.SetActive(hide);
 
 			// Remove floor index from the objects to hide list
 			if (!HideFloor.Value)
@@ -107,7 +111,7 @@ namespace LivEnvironmentHider
 
             float secondsToWait; 
 			//treat being in a different scene from the last as the first time the arena is loaded. Subsequent replays will have the same current scene and last scene
-			bool firstArenaLoad = CurrentScene == LastScene;
+			bool firstArenaLoad = CurrentScene != LastScene;
 			// Give rumble hud a chance to take the opponent's portraite when the map first loads
             secondsToWait = (firstArenaLoad && hide) ? 0 : ((float) DelayEnvHide.Value);
 
@@ -118,9 +122,10 @@ namespace LivEnvironmentHider
 			{
 				
 				GameObject child = arenaParent.transform.GetChild(i).gameObject;
-				Log($"Hide from LIV pre: {child.Name} layer: {child.layer}", true);
-				//Store the environment elements' original layers in a list.
-				if(firstArenaLoad && hide)
+				Log($"Hide from LIV pre: {child.name} layer: {child.layer}", true);
+				//Store the environment elements' original layers in a list only on the first load.
+				if(firstArenaLoad) //Firstload is the wrong variable to check here. Only reason it's successful is because the initial indices are already there and never cleared.
+					//Skip delay would be better but the name isn't descriptive. Need to rename to something that reflects the fact that it's used when you change the hid state without first loading the arena
 				{
 					OriginalLayer.Add(child.layer);
 				}
@@ -129,10 +134,11 @@ namespace LivEnvironmentHider
 					// if hide is intended, set layer to hide from liv, otherwise, set it to the original layer value
 					child.layer = hide ? NO_LIV_LAYER : OriginalLayer[i];
 				}
-				Log($"Hide from LIV post: {child.Name} layer: {child.layer}", true)
+				Log($"Hide from LIV post: {child.name} layer: {child.layer}", true);
 			}
 			isEnvHidden = hide;
-			DefaultHideState.Value = hide;
+			GreenScreenActive.Value = hide;
+			modCategory.SaveToFile();
 		}
 
 
