@@ -54,8 +54,9 @@ namespace LivEnvironmentHider
 		{
 			LastScene = CurrentScene;
 			CurrentScene = sceneName.Trim().ToLower();
+			isEnvHidden = false;
 			//BuildDebugScreen();
-			
+
 			FirstLoad();
 
 			UpdatePrefs();
@@ -74,6 +75,10 @@ namespace LivEnvironmentHider
 			if(CurrentMapProduction != null)
 			{
 				DiffLog($"Map Production Active: {CurrentMapProduction.activeSelf}", true);
+			}
+			if (Input.GetKeyDown(KeyCode.Z))
+			{
+				ToggleEnvHide();
 			}
 		}
 	}
