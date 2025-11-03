@@ -47,6 +47,40 @@ namespace LivEnvironmentHider
 			}
 		}
 
+		private GameObject GrabArenaParent()
+		{
+			GameObject arenaParent;
+			if (CurrentScene == "map0")
+			{
+				arenaParent = Calls.GameObjects.Map0.Map0production.Mainstaticgroup.GetGameObject();
+			}
+			else if (CurrentScene == "map1")
+			{
+				arenaParent = Calls.GameObjects.Map1.Map1production.Mainstaticgroup.GetGameObject();
+			} 
+			else
+				return null;
+			
+			return arenaParent;
+		}
+
+
+		private GameObject GrabMapProduction()
+		{
+			GameObject mapProduction;
+			if (CurrentScene == "map0")
+			{
+				mapProduction = Calls.GameObjects.Map0.Map0production.GetGameObject();
+			}
+			else if (CurrentScene == "map1")
+			{
+				mapProduction = Calls.GameObjects.Map1.Map1production.GetGameObject();
+			} 
+			else
+				return null;
+			
+			return mapProduction;
+		}
 		/// <summary>
 		/// Gives Rumblehud a chance to take portraits before moving map production layers
 		/// </summary>
@@ -61,9 +95,9 @@ namespace LivEnvironmentHider
 				yield break;
 
 			}
-			GameObject mapProduction;
+			GameObject mapProduction = GrabMapProduction();
 			List<int> objectsToHide;
-			GameObject arenaParent;
+			GameObject arenaParent = GrabArenaParent();
 			GameObject tournamentScorer = GameObject.Find("NewTextGameObject(Clone)");
 			int combatFloorIndex;
 			if(tournamentScorer != null)
@@ -76,16 +110,12 @@ namespace LivEnvironmentHider
 			{
 				//Add combat floor as last element so it can be removed from the list if hide combat floor is disabled.
 				objectsToHide = new List<int> { 0, 1, 3, 4, 6, /*combat floor:*/ 2 };
-				arenaParent = Calls.GameObjects.Map0.Map0production.Mainstaticgroup.GetGameObject();
-				mapProduction = Calls.GameObjects.Map0.Map0production.GetGameObject();
 				
 
 			}
 			else if (CurrentScene == "map1")
 			{
 				objectsToHide = new List<int> { 0, 2, 3, 4, /*combat floor:*/ 1 };
-				arenaParent = Calls.GameObjects.Map1.Map1production.Mainstaticgroup.GetGameObject();
-				mapProduction = Calls.GameObjects.Map1.Map1production.GetGameObject();
 				//Parent derived pit mask and cylinder so they get disabled along with the map production when a custom map is loaded
 				DerivedPitMask.transform.SetParent(mapProduction.transform, true);
 				DerivedPitMask.SetActive(hide);
