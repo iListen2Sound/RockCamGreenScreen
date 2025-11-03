@@ -76,7 +76,7 @@ namespace LivEnvironmentHider
 			{
 				DiffLog($"Map Production Active: {CurrentMapProduction.activeSelf}", true);
 			}
-			if (Input.GetKeyDown(KeyCode.Z))
+			if (Input.GetKeyDown(KeyCode.Z) && DebugModeActive)
 			{
 				ToggleEnvHide();
 			}

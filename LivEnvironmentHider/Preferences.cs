@@ -52,6 +52,7 @@ namespace LivEnvironmentHider
 			Diagnostics.SetFilePath(Path.Combine(USER_DATA, CONFIG_FILE));
 
 			IsDebugMode = Diagnostics.CreateEntry("Enable Debug Mode", false, null, "Enables more verbose logging and other debugging helper tools");
+			DebugModeActive = IsDebugMode;
 		}
 
 		private void UpdatePrefs()
