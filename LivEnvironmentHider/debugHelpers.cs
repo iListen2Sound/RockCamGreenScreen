@@ -62,14 +62,16 @@ namespace LivEnvironmentHider
 				return;
 			switch (logLevel)
 			{
+				case 0:
+					LoggerInstance.Msg(message);
 				case 1:
-					LoggerInstance.Warning(message);
+					LoggerInstance.Warning("Warn: " + message);
 					break;
 				case 2:
-					LoggerInstance.Error(message);
+					LoggerInstance.Error("Error: " + message);
 					break;
 				default:
-					LoggerInstance.Msg(message);
+					LoggerInstance.Msg("Unrecognized logLevel: " + message);
 					break;
 			}
 		}

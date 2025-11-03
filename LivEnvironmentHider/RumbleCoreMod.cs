@@ -64,7 +64,15 @@ namespace LivEnvironmentHider
 
 			//ModifyMaps
 			CreateGreenScreens();
-			MelonCoroutines.Start(HideFromLiv(GreenScreenActive.Value));
+
+			if(LastScene == CurrentScene)
+			{
+				SetEnvironmentVisibility(false, false);
+			}
+			else
+			{
+				MelonCoroutines.Start(DelayEnvironmentHiding());
+			}
 			
 		}
 

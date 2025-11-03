@@ -81,6 +81,9 @@ namespace LivEnvironmentHider
 			
 			return mapProduction;
 		}
+
+
+
 		/// <summary>
 		/// Gives Rumblehud a chance to take portraits before moving map production layers
 		/// </summary>
@@ -165,6 +168,10 @@ namespace LivEnvironmentHider
 			modCategory.SaveToFile();
 		}
 
+
+
+
+
 		private void SetFloorVisibility(bool isVisible)
 		{
 			GameObject floor;
@@ -179,11 +186,106 @@ namespace LivEnvironmentHider
 			floor.layer = isVisible ? 9 : 23;
 		}
 
+		private void SetRingVisibility(isVisible)
+		{
+			GameObject floor;
+			if(CurrentScene == map0)
+			{
+				floor = GrabArenaStaticGroup().transform.GetChild(/*ring index*/);
+			}
+			else if (CurrentScene == map1)
+			{
+				floor = GrabArenaStaticGroup().transform.GetChild(/*ring index*/);
+			}
+			floor.layer = isVisible ? /*ring original layer*/ : 23;
+		}
+
+		private void SetRingVisibility
+
+		private void SetEnvironmentVisibility(bool isVisible, bool manualCall = false)
+		{
+			Log($"SetEnvVis: CurrentScene is {CurrentScene}", true, 0);
+			if (isEnvHidden == hide)
+			{
+				Log($"SetEnvVis: Environment is already {(isVisible ? "visible" : "hidden")}. Breaking out of coroutine", false, 1);
+				yield break;
+
+			}
+			GameObject mapProduction = GrabMapProduction();
+			List<int> objectsToHide;
+			GameObject arenaParent = GrabArenaStaticGroup();
+			GameObject tournamentScorer = GameObject.Find("NewTextGameObject(Clone)");
+			int combatFloorIndex;
+			if(tournamentScorer != null)
+				tournamentScorer.layer = NO_LIV_LAYER;
+			
+
+			//Select game objects to hide according to the arena
+			
+			if (CurrentScene == "map0")
+			{
+				//Add combat floor as last element so it can be removed from the list if hide combat floor is disabled.
+				objectsToHide = new List<int> { 0, 1, 3, 4, 6, };
+				
+
+			}
+			else if (CurrentScene == "map1")
+			{
+				objectsToHide = new List<int> { 0, 2, 3, 4 };
+				//Parent derived pit mask and cylinder so they get disabled along with the map production when a custom map is loaded
+				DerivedPitMask.transform.SetParent(mapProduction.transform, true);
+				DerivedPitMask.SetActive(!isVisible);
+			} 
+			else
+			{
+				isEnvHidden = false;
+				//Exit if not in a combat map
+				yield break;
+			}
+
+			DerivedCylinder.transform.SetParent(mapProduction.transform, true);
+			DerivedCylinder.SetActive(!isVisible);
+
+			SetFloorVisibility(isVisible);
+			
+			CurrentMapProduction = mapProduction;
+
+
+			//Loop through arena parent's children. When a child's index is in the list of objectsToHide, set the layer accordingly.
+			for (int i = 0; i < arenaParent.transform.childCount; i++)
+			{
+				
+				GameObject child = arenaParent.transform.GetChild(i).gameObject;
+				Log($"SetEnvVis pre: {child.name} layer: {child.layer}", true);
+				//Store the environment elements' original layers in a list only on the first load.
+				if(!manualCall) //Firstload is the wrong variable to check here. Only reason it's successful is because the initial indices are already there and never cleared.
+					//Skip delay would be better but the name isn't descriptive. Need to rename to something that reflects the fact that it's used when you change the hid state without first loading the arena
+				{
+					OriginalLayer.Add(child.layer);
+					if(child.layer == LIV_ONLY_LAYER)
+						Log($"SetEnvVis: Found arena element set to no liv layer about to be added to OriginalLayer<int>. Possible logic error", true, 1);
+				}
+				if (objectsToHide.Contains(i))
+				{
+					// if hide is intended, set layer to hide from liv, otherwise, set it to the original layer value
+					child.layer = isVisible ? OriginalLayer[i] : NO_LIV_LAYER;
+				}
+				Log($"SetEnvVis: {child.name} layer: {child.layer}", true);
+			}
+			isEnvHidden = !isVisible;
+			GreenScreenActive.Value = !isVisible;
+			modCategory.SaveToFile();
+		}
 
 		private void ToggleEnvHide()
 		{
-			
-			MelonCoroutines.Start(HideFromLiv(!isEnvHidden, true));
+			SetEnvironmentVisibility(isEnvHidden);
+		}
+
+		private IEnumerator DelayEnvironmentHiding()
+		{
+			yield return new WaitForSeconds(DelayEnvHide.Value);
+			SetEnvironmentVisibility(false);
 		}
     }
 }
