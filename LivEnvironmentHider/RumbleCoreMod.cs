@@ -36,7 +36,7 @@ namespace LivEnvironmentHider
 		public override void OnInitializeMelon()
 		{
 			Calls.onAMapInitialized += OnMapInitialized;
-			
+
 			InitPreferences(); //preferences.cs
 
 			LoggerInstance.Msg("Initialized.");
@@ -44,10 +44,10 @@ namespace LivEnvironmentHider
 
 		private void FirstLoad()
 		{
-			if(!isFirstLoad) return;
+			if (!isFirstLoad) return;
 
 			InitImportedAssets();
-			
+
 			isFirstLoad = false;
 		}
 		private void OnMapInitialized(string sceneName)
@@ -56,27 +56,38 @@ namespace LivEnvironmentHider
 			CurrentScene = sceneName.Trim().ToLower();
 			isEnvHidden = false;
 			//BuildDebugScreen();
-
 			FirstLoad();
 
-			UpdatePrefs();
-
+			if (!isFirstLoad)
+				UpdatePrefs();
 
 			//ModifyMaps
 			CreateGreenScreens();
-			MelonCoroutines.Start(HideFromLiv(DefaultHideState.Value));
-			
+			if (GreenScreenActive.Value)
+			{
+
+
+				if (LastScene == CurrentScene)
+				{
+					SetEnvironmentVisibility(false, false);
+				}
+				else
+				{
+					MelonCoroutines.Start(DelayEnvironmentHiding());
+				}
+			}
+
 		}
 
-		
-		
+
+
 		public override void OnUpdate()
 		{
-			if(CurrentMapProduction != null)
+			if (CurrentMapProduction != null)
 			{
 				DiffLog($"Map Production Active: {CurrentMapProduction.activeSelf}", true);
 			}
-			if (Input.GetKeyDown(KeyCode.Z))
+			if (Input.GetKeyDown(KeyCode.Z) && DebugModeActive)
 			{
 				ToggleEnvHide();
 			}

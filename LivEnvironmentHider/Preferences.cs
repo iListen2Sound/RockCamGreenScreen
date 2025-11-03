@@ -18,13 +18,13 @@ namespace LivEnvironmentHider
 		private MelonPreferences_Entry<string> GreenScreenColor;
 		private MelonPreferences_Entry<bool> HideFloor;
 		private MelonPreferences_Entry<string> FloorBackgroundColor;
-		private MelonPreferences_Entry<bool> DefaultHideState;
+		private MelonPreferences_Entry<bool> GreenScreenActive;
 
 		private MelonPreferences_Category Compat;
 		private MelonPreferences_Entry<double> DelayEnvHide;
 
 		private MelonPreferences_Category Diagnostics;
-		private MelonPreferences_Entry<bool> IsDebugMode;
+		private MelonPreferences_Entry<bool> DebugModePref;
 
 
 		private void InitPreferences()
@@ -39,7 +39,7 @@ namespace LivEnvironmentHider
 			modCategory = MelonPreferences.CreateCategory(BuildInfo.Name);
 			modCategory.SetFilePath(Path.Combine(USER_DATA, CONFIG_FILE));
 			
-			DefaultHideState = modCategory.CreateEntry("Green Screen Active", true, null, "Activates or deactivates green screen function");
+			GreenScreenActive = modCategory.CreateEntry("Green Screen Active", true, null, "Activates or deactivates green screen function");
 			GreenScreenColor = modCategory.CreateEntry("Green Screen Color", "#000000", null, "Plot Twist: Doesn't actually have to be green. If using black (default) add a luma key filter to the LIV source in OBS.");
 			HideFloor = modCategory.CreateEntry("Hide Combat Floor", false, null, "Hides the combat floor from Liv.");
 
@@ -51,7 +51,8 @@ namespace LivEnvironmentHider
 			Diagnostics = MelonPreferences.CreateCategory("Diagnostic options");
 			Diagnostics.SetFilePath(Path.Combine(USER_DATA, CONFIG_FILE));
 
-			IsDebugMode = Diagnostics.CreateEntry("Enable Debug Mode", false, null, "Enables more verbose logging and other debugging helper tools");
+			DebugModePref = Diagnostics.CreateEntry("Enable Debug Mode", false, null, "Enables more verbose logging and other debugging helper tools");
+			DebugModeActive = DebugModePref.Value;
 		}
 
 		private void UpdatePrefs()

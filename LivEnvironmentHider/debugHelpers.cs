@@ -11,7 +11,8 @@ namespace LivEnvironmentHider
 		private GameObject DebugUi;
 		private TextMeshPro DebugUiText;
 		private GameObject PlayerUi;
-
+		//Set to DebugModePref.Value once preferences have been initialized
+		private bool DebugModeActive = true;
 		/// <summary>
 		/// Creates a debug screen in front of the player 
 		/// </summary>
@@ -57,18 +58,21 @@ namespace LivEnvironmentHider
 		/// <param name="logLevel"></param>
 		private void Log(string message, bool debugOnly = false, int logLevel = 0)
 		{
-			if (!IsDebugMode.Value && debugOnly)
+			if (!DebugModeActive && debugOnly)
 				return;
 			switch (logLevel)
 			{
+				case 0:
+					LoggerInstance.Msg(message);
+					break;
 				case 1:
-					LoggerInstance.Warning(message);
+					LoggerInstance.Warning("Warn: " + message);
 					break;
 				case 2:
-					LoggerInstance.Error(message);
+					LoggerInstance.Error("Error: " + message);
 					break;
 				default:
-					LoggerInstance.Msg(message);
+					LoggerInstance.Msg("Unrecognized logLevel: " + message);
 					break;
 			}
 		}
