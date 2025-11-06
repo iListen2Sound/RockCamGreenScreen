@@ -14,6 +14,7 @@ namespace LivEnvironmentHider
 	{
 		GameObject DerivedCylinder;
 		GameObject DerivedPitMask;
+		GameObject DerivedFullFloorMask;
 		Dictionary<GameObject, int> HideableObjectsToLayer;
 
 		List<int> OriginalLayer = new();
@@ -27,17 +28,33 @@ namespace LivEnvironmentHider
 		{
 			if (CurrentScene.Contains("map"))
 			{
-
+				GameObject EnvironmentHider = new GameObject("Liv Environment Hider");
+				EnvironmentHider.transform.SetParent(GrabMapProduction().transform, true);
+				EnvironmentHider.SetActive(true);
 
 				DerivedCylinder = GameObject.Instantiate(BaseCylinder);
-				DerivedCylinder.transform.SetParent(GrabMapProduction().transform, true);
+				DerivedCylinder.transform.SetParent(EnvironmentHider.transform, true);
 				DerivedCylinder.SetActive(false);
+				//ring 
+				//-0.2 -0.277 0
+				//pit 
+				//-0.2 0.002 0
+				DerivedFullFloorMask = GameObject.Instantiate(BaseFullFloorMask);
+				DerivedFullFloorMask.transform.SetParent(EnvironmentHider.transform, true);
+				DerivedFullFloorMask.SetActive(false);
+
+				if(CurrentScene == "map0")
+				{
+					DerivedFullFloorMask.transform.localPosition = new Vector3(-0.2f, -0.277f, 0);
+				}
+				else
 
 				if (CurrentScene == "map1")
 				{
+					DerivedFullFloorMask.transform.localPosition = new Vector3(-0.2f, 0.002f, 0);
 
 					DerivedPitMask = GameObject.Instantiate(BasePitMask);
-					DerivedPitMask.transform.SetParent(GrabMapProduction().transform, true);
+					DerivedPitMask.transform.SetParent(EnvironmentHider.transform, true);
 					DerivedPitMask.SetActive(false);
 
 				}
@@ -100,7 +117,8 @@ namespace LivEnvironmentHider
 			}
 			else
 			{ Log("SetFloorVisibility: unsupported map", true, 0); return; }
-			floor.layer = isVisible ? 9 : 23;
+			floor.layer = isVisible ? 9 : NO_LIV_LAYER;
+			DerivedFullFloorMask.SetActive(!isVisible);
 			IsFloorVisible = isVisible;
 		}
 
@@ -117,7 +135,7 @@ namespace LivEnvironmentHider
 			}
 			else
 			{ Log("SetRingVisibility: unsupported map", true, 0); return; }
-			ring.layer = isVisible ? 0 : 23;
+			ring.layer = isVisible ? 0 : NO_LIV_LAYER;
 			IsRingVisible = isVisible;
 		}
 
@@ -303,6 +321,8 @@ namespace LivEnvironmentHider
 				DerivedPitMask.GetComponent<MeshRenderer>().material.color = gsColor;
 			if (DerivedCylinder != null)
 				DerivedCylinder.GetComponent<MeshRenderer>().material.color = gsColor;
+			if(DerivedFullFloorMask != null)
+				DerivedFullFloorMask.GetComponent<MeshRenderer>().material.color = gsColor;
 
 			PrefGreenScreenColor.Value = hexCode;
 			if (hexCode != PrefGreenScreenColor.Value)
