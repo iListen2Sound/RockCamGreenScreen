@@ -3,12 +3,10 @@
 Hides arena environment from the Rock Cam so that you can use chroma key or other green screen methods to overlay in OBS or use for video editing.
 
 ## Features 
+- Legacy cam and VR view are unaffected
 - Toggle green screen on/off
 - Common green screen colors as presets
 - Selectively hide combat floor and ring clamp
-
-
-Note: Hiding the environment from Rock cam also hides it from LIV
 
 ## Configuration 
 UserData/RockCamGreenScreen/config.cfg
@@ -24,7 +22,7 @@ UserData/RockCamGreenScreen/config.cfg
 ### Keyboard inputs
 | Option | Default | Description|
 | --- |  --- | --- |
-|Modifier Key| LeftAlt | Doesn't have to be an actual modifier key. |
+|Modifier Key| LeftAlt | Can be any key. Not just Alt/Ctrl/Shift |
 
 #### Control keys
 | Key | Action |
@@ -45,10 +43,11 @@ UserData/RockCamGreenScreen/config.cfg
 ### Compatibility with other mods
 | Option | Default | Description|
 | --- |  --- | --- |
-| Hide Environment Delay | 2.0 | Delay in seconds for hiding the map environment. Too short of a delay will make the environment visible in your opponent's rumble hud portrait. Turn off the green screen if you want to retake your opponent's rumble hud
+| Hide Environment Delay | 2.0 | Delay in seconds before hiding the map environment. If too short, the environment may appear in your opponent's rumble HUD portrait. Disable green screen to retake HUD portraits.
 
 
 ### Notes:
 
 - Can't hide custom maps.
 - Only works in the arenas. Not in the gym or the park. 
+- Hiding from Rock Cam also hides from LIV cam.
