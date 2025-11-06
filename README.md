@@ -1,8 +1,14 @@
 # LivEnvironmentHider
 
-Hides environmental elements from the LIV camera so that you can use chroma key or other green screen methods in OBS or in video editing programs
+Hides arena environment from the Rock Cam so that you can use chroma key or other green screen methods to overlay in OBS or use for video editing.
 
-Note: Hiding the environment from LIV also hides them in Rock cam
+## Features 
+- Toggle green screen on/off
+- Common green screen colors as presets
+- Selectively hide combat floor and ring clamp
+
+
+Note: Hiding the environment from Rock cam also hides it from LIV
 
 ## Configuration 
 Applied at scene load
@@ -11,13 +17,13 @@ Applied at scene load
 | --- |  --- | --- |
 | Green Screen Active | true | |
 | Green Screen Color | #FF00FF| Hex code for color you want your green screen to be. This will be the same color you use in OBS's chroma key filter
-| Hide Combat Floor | false | Hides the combat floor from LIV
-| Hide Combat Ring | false | Hides the combat ring clamp from LIV |
+| Hide Combat Floor | false | Hides the combat floor from the Rock Cam
+| Hide Combat Ring | false | Hides the combat ring clamp from the Rock Cam |
 
 ### Keyboard inputs
 | Option | Default | Description|
 | --- |  --- | --- |
-|Modifier Key| LeftAlt | Use with color keys to change screen color (will overwrite your default green screen color preference) |
+|Modifier Key| LeftAlt | Doesn't have to be an actual modifier key. |
 
 #### Control keys
 | Key | Action |
@@ -38,6 +44,10 @@ Applied at scene load
 ### Compatibility with other mods
 | Option | Default | Description|
 | --- |  --- | --- |
-| Hide Environment Delay | 2.0 | Delay in seconds for hiding the map environment. Too short of a delay will make the environment visible in your opponent's rumble hud portrait
+| Hide Environment Delay | 2.0 | Delay in seconds for hiding the map environment. Too short of a delay will make the environment visible in your opponent's rumble hud portrait. Turn off the green screen if you want to retake your opponent's rumble hud
 
 
+### Notes:
+
+- Can't hide custom maps.
+- Only works in the arenas. Not in the gym or the park. 
