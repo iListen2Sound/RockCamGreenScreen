@@ -21,7 +21,7 @@ Applied at scene load
 
 #### Control keys
 | Key | Action |
-| --- |  --- | --- |
+| --- |  --- | 
 | Z | Toggle green screen on/off |
 | F | Toggle hiding combat floor on/off |
 | Q | Toggle hiding ring clamp on/off |
