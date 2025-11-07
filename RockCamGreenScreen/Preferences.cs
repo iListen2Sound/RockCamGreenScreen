@@ -47,7 +47,7 @@ namespace RockCamGreenScreen
 
 			CatInput = MelonPreferences.CreateCategory("Input");
 			CatInput.SetFilePath(Path.Combine(USER_DATA, CONFIG_FILE));
-			PrefModifierKey = CatInput.CreateEntry("Modifier Key", "LeftAlt", null, "Key to use as a modifier to use keyboard input (specify left or right when using actual modifier keys)");
+			PrefModifierKey = CatInput.CreateEntry("Modifier Key", "LeftAlt", null, "Key to use as a modifier to use keyboard input (specify left or right when using Alt, Ctrl, or Shift)");
 
 
 			CatCompat = MelonPreferences.CreateCategory("Compatability with other mods");
