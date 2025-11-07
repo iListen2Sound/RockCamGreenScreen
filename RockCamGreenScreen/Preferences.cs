@@ -41,7 +41,7 @@ namespace RockCamGreenScreen
 			CatMain.SetFilePath(Path.Combine(USER_DATA, CONFIG_FILE));
 			
 			PrefGreenScreenActive = CatMain.CreateEntry("Green Screen Active", true, null, "Activates or deactivates green screen function");
-			PrefGreenScreenColor = CatMain.CreateEntry("Green Screen Color", "#FF00FF", null, "Plot Twist: Doesn't actually have to be green. You can use black with a luma key filter");
+			PrefGreenScreenColor = CatMain.CreateEntry("Green Screen Color", "#FF00FF", null, "Doesn't actually have to be green. You can use black with a luma key filter");
 			PrefHideFloor = CatMain.CreateEntry("Hide Combat Floor", false, null, "Hides the combat floor from the Rock Cam.");
 			PrefHideRingClamp = CatMain.CreateEntry("Hide Ring Clamp", false, null, "Hides the ring clamp from the Rock Cam.");
 
